@@ -1,0 +1,44 @@
+{% extends "includes/layout.njk" %}
+
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+    <h1 class="govuk-heading-xl">{{ messages("projects.header") }}</h1>
+
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-one-third">
+            {% include "includes/projectSearch.njk" %}
+        </div>
+
+        <div class="govuk-grid-column-two-thirds">
+            <h2 class="govuk-heading-m">
+                <span class="govuk-!-font-size-36">
+{#                    {{ projects | length }}#}
+                </span>
+                {{ messages("projects.projects") }}
+            </h2>
+
+            <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+
+            <ul class="govuk-list">
+{#                {% for project in projects %}#}
+{#                    <li>#}
+{#                        <h2 class="govuk-heading-m">#}
+{#                            <a class="govuk-link" href="/projects/{{ project.id }}">{{ project.projectName }}</a>#}
+{#                        </h2>#}
+
+{#                        <p class="govuk-body">{{ project.projectDetails }}</p>#}
+
+{#                        <p class="govuk-body">{{ t("projects:phase") }}{{ project.projectPhase }}</p>#}
+
+{#                        <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">#}
+{#                    </li>#}
+{#                {% endfor %}#}
+
+            </ul>
+        </div>
+    </div>
+{% endblock %}

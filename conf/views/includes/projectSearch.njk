@@ -1,0 +1,58 @@
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+<form method="get" action="/projects" autocomplete="off">
+    <h2 class="govuk-heading-m">Search projects</h2>
+    <div class="govuk-form-group">
+        {{ govukInput({
+            label: {
+                text: messages("search.keywords")
+            },
+            id: "keywords",
+            name: "keywords"
+        }) }}
+
+        {{ govukSelect({
+            id: "phase",
+            name: "phase",
+            label: {
+                text: messages("search.phase")
+            },
+            items: [
+                {
+                    text: "--",
+                    selected: true
+                },
+                {
+                    value: "alpha",
+                    text: messages("search.phase.alpha")
+                },
+                {
+                    value: "beta",
+                    text: messages("search.phase.beta")
+                },
+                {
+                    value: "discovery",
+                    text: messages("search.phase.discovery")
+                },
+                {
+                    value: "live",
+                    text: messages("search.phase.live")
+                }
+            ]
+        }) }}
+    </div>
+
+    {{ govukButton({
+        text: messages("site.search")
+    }) }}
+
+</form>
+
+<form method="get" action="/projects/create">
+    {{ govukButton({
+        text: messages("search.createProject"),
+        classes: "govuk-button--secondary"
+    }) }}
+</form>

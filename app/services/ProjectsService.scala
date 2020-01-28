@@ -14,24 +14,14 @@
  * limitations under the License.
  */
 
-package forms.behaviours
+package services
 
-import play.api.data.{Form, FormError}
+import play.api.mvc.Result
 
-trait StringFieldBehaviours extends FieldBehaviours {
+import scala.concurrent.Future
 
-    def fieldWithMaxLength(form: Form[_],
-                           fieldName: String,
-                           maxLength: Int,
-                           lengthError: FormError): Unit = {
+class ProjectsService {
 
-    s"must not bind strings longer than $maxLength characters" in {
+  def fetchAllProjects: Future[Result]
 
-      forAll(stringsLongerThan(maxLength) -> "longString") {
-        string =>
-          val result = form.bind(Map(fieldName -> string)).apply(fieldName)
-          result.errors shouldEqual Seq(lengthError)
-      }
-    }
-  }
 }

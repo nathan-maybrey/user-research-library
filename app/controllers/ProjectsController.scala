@@ -14,22 +14,25 @@
  * limitations under the License.
  */
 
-package controllers.actions
+package controllers
 
 import javax.inject.Inject
-import models.requests.IdentifierRequest
-import play.api.mvc._
+import play.api.i18n.I18nSupport
+import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import renderer.Renderer
+import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
 
-import scala.concurrent.{ExecutionContext, Future}
+import scala.concurrent.ExecutionContext
 
-class FakeIdentifierAction @Inject()(bodyParsers: PlayBodyParsers) extends IdentifierAction {
+class ProjectsController @Inject()(
+    val controllerComponents: MessagesControllerComponents,
+    renderer: Renderer,
 
-  override def invokeBlock[A](request: Request[A], block: IdentifierRequest[A] => Future[Result]): Future[Result] =
-    block(IdentifierRequest(request, "id"))
+)(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  override def parser: BodyParser[AnyContent] =
-    bodyParsers.default
+  def viewAllProjects: Action[AnyContent] = Action.async {
+    implicit request =>
+      renderer.render("projects.njk").map(Ok(_))
+  }
 
-  override protected def executionContext: ExecutionContext =
-    scala.concurrent.ExecutionContext.Implicits.global
 }

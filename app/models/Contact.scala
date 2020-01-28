@@ -14,14 +14,6 @@
  * limitations under the License.
  */
 
-package navigation
+package models
 
-import play.api.mvc.Call
-import pages._
-import models.{Mode, NormalMode, UserAnswers}
-
-class FakeNavigator(desiredRoute: Call, mode: Mode = NormalMode) extends Navigator {
-
-  override def nextPage(page: Page, mode: Mode, userAnswers: UserAnswers): Call =
-    desiredRoute
-}
+case class Contact(name: String, email: String, projectId: List[String])
