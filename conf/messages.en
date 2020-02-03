@@ -14,13 +14,14 @@ site.service_name = User Research Library
 site.textarea.char_limit = (Limit is {0} characters)
 site.title.suffix = - user-research-library - GOV.UK
 site.search = Search
+site.submit = Submit
 
 ## Projects
 projects.header = User Research Library
 projects.projects = projects
 projects.phase = Current Phase:
 
-##Project Search
+## Project Search
 search.keywords = Keywords
 search.phase = Current Phase
 search.phase.alpha = Alpha
@@ -28,6 +29,19 @@ search.phase.beta = Beta
 search.phase.discovery = Discovery
 search.phase.live = Live
 search.createProject = Create Project
+
+## Create project
+createProject.header = Create Project
+createProject.input.projectName.label = Project Name
+createProject.input.projectName.error.required = You must enter a project name.
+createProject.textarea.details.label = Details
+createProject.textarea.details.error.required = You must enter some details.
+createProject.textarea.details.hint = Do not include any sensitive information.
+createProject.select.phase.label = Current Phase
+createProject.select.phase.alpha = Alpha
+createProject.select.phase.beta = Beta
+createProject.select.phase.discovery = Discovery
+createProject.select.phase.live = Live
 
 error.title.prefix = Error:
 error.summary.title = There is a problem

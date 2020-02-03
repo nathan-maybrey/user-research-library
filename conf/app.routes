@@ -13,3 +13,6 @@ GET        /check-your-answers                          controllers.CheckYourAns
 GET        /unauthorised                                controllers.UnauthorisedController.onPageLoad
 
 GET        /accessibility-statement                     controllers.AccessibilityController.onPageLoad
+
+GET        /create-project                              controllers.CreateProjectController.onPageLoad
+POST       /create-project                              controllers.CreateProjectController.onSubmit

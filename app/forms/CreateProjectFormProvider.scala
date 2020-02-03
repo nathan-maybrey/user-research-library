@@ -14,14 +14,21 @@
  * limitations under the License.
  */
 
-package services
+package forms
 
-import play.api.mvc.Result
+import forms.mappings.Mappings
+import models.Project
+import play.api.data.Form
+import play.api.data.Forms._
 
-import scala.concurrent.Future
+class CreateProjectFormProvider extends Mappings {
 
-class ProjectsService {
-
-  def fetchAllProjects: Future[Result] = ???
+  def apply(): Form[Project] = Form(
+    mapping(
+      "project-name" -> text("createProject.input.projectName.error.required"),
+      "details" -> text("createProject.textarea.details.error.required"),
+      "phase" -> text()
+    )(Project.apply)(Project.unapply)
+  )
 
 }

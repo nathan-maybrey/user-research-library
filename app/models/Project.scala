@@ -14,14 +14,12 @@
  * limitations under the License.
  */
 
-package services
+package models
 
-import play.api.mvc.Result
+import play.api.libs.json.{Json, OFormat}
 
-import scala.concurrent.Future
+case class Project(name: String, details: String, phase: String)
 
-class ProjectsService {
-
-  def fetchAllProjects: Future[Result] = ???
-
+object Project {
+  implicit val format: OFormat[Project] = Json.format[Project]
 }
