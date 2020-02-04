@@ -17,10 +17,53 @@
 package repositories
 
 import javax.inject.Inject
+import models.Project
+import play.api.libs.json.Json
 import play.modules.reactivemongo.ReactiveMongoApi
+import reactivemongo.play.json.collection.JSONCollection
+import reactivemongo.play.json.ImplicitBSONHandlers.JsObjectDocumentWriter
+import utils.EncryptionTools
 
-class ProjectsRepository @Inject()(mongo: ReactiveMongoApi) {
+import scala.concurrent.{ExecutionContext, Future}
 
-  def getAllProjects = ???
+class ProjectsRepository @Inject()(mongo: ReactiveMongoApi,
+                                   encryptionTools: EncryptionTools)(implicit ec: ExecutionContext) {
+
+  private val collectionName: String = "projects"
+
+  private def collection: Future[JSONCollection] =
+    mongo.database.map(_.collection[JSONCollection](collectionName))
+
+  def createProject(project: Project) = {
+
+    val document = Json.obj(
+      "_id" -> encryptionTools.uuid,
+      "name" -> project.name,
+      "details" -> project.details,
+      "phase" -> project.phase.phase
+    )
+
+    collection.flatMap {
+      _.insert(ordered = false)
+        .one(document)
+        .map {
+          lastError =>
+            lastError.ok
+        }
+    }
+  }
+
+  def getProjects: Future[JSONCollection] = {
+
+    val query = Json.obj(
+      "name" -> Json.obj("$regex" -> "")
+    )
+
+    collection.flatMap{
+      _.find(query)
+        .cursor[JSONCollection]()
+        .collect()
+    }
+  }
 
 }

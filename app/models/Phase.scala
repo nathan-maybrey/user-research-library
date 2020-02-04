@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package utils
+package models
 
-import java.util.UUID
-import javax.inject.Singleton
+import play.api.libs.json.{Json, OFormat}
 
-@Singleton
-class EncryptionTools {
+case class Phase(phase: String)
 
-  def uuid: String = UUID.randomUUID().toString
+object Phase {
+  implicit val format: OFormat[Phase] = Json.format[Phase]
 }

@@ -40,9 +40,10 @@
             label: {
                 html: messages("createProject.input.projectName.label")
             },
-            id: "project-name",
-            name: "project-name",
-            errorMessage: errors.projectName
+            id: "projectName",
+            name: "projectName",
+            errorMessage: errors.projectName,
+            value: form.projectName.value
         }) }}
 
         {{ govukTextarea({
@@ -54,7 +55,8 @@
             hint: {
                 text: messages("createProject.textarea.details.hint")
             },
-            errorMessage: errors.details
+            errorMessage: errors.details,
+            value: form.details.value
         }) }}
 
         {{ govukSelect({
@@ -63,25 +65,7 @@
             label: {
                 text: messages("createProject.select.phase.label")
             },
-            items: [
-                {
-                    value: "Alpha",
-                    text: messages("createProject.select.phase.alpha"),
-                    selected: true
-                },
-                {
-                    value: "Beta",
-                    text: messages("createProject.select.phase.beta")
-                },
-                {
-                    value: "Discovery",
-                    text: messages("createProject.select.phase.discovery")
-                },
-                {
-                    value: "Live",
-                    text: messages("createProject.select.phase.live")
-                }
-            ]
+            items: phases
         }) }}
 
     {% endcall %}

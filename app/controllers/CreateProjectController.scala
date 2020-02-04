@@ -18,12 +18,13 @@ package controllers
 
 import forms.CreateProjectFormProvider
 import javax.inject.Inject
-import models.Project
+import models.{Phase, Project}
 import play.api.data.Form
 import play.api.i18n.I18nSupport
-import play.api.libs.json.Json
+import play.api.libs.json.{JsObject, Json}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Request, Result, Results}
 import renderer.Renderer
+import repositories.ProjectsRepository
 import services.ProjectsService
 import uk.gov.hmrc.nunjucks.NunjucksSupport
 import uk.gov.hmrc.play.bootstrap.controller.FrontendBaseController
@@ -34,6 +35,7 @@ class CreateProjectController @Inject()(
     val controllerComponents: MessagesControllerComponents,
     renderer: Renderer,
     projectsService: ProjectsService,
+    projectsRepository: ProjectsRepository,
     formProvider: CreateProjectFormProvider
 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with NunjucksSupport {
 
@@ -41,14 +43,15 @@ class CreateProjectController @Inject()(
 
   def onPageLoad: Action[AnyContent] = Action.async {
     implicit request =>
-      renderer.render("create-project.njk").map(Ok(_))
+      renderView(form, Results.Ok)
   }
 
   private def renderView(form: Form[Project],
                          status: Results.Status)(implicit request: Request[AnyContent]): Future[Result] = {
 
     val json = Json.obj(
-      "form" -> form
+      "form" -> form,
+      "phases" -> phaseJsonList(form.data.get("phase"), phaseList)
     )
 
     renderer.render("create-project.njk", json).map(status(_))
@@ -60,16 +63,35 @@ class CreateProjectController @Inject()(
         .bindFromRequest()
           .fold(
             formWithErrors => {
-              println("There were errors")
               renderView(formWithErrors, Results.BadRequest)
             },
             value => {
-              //Put in mongo
-              println("Success")
-              Future.successful(Ok)
+              projectsRepository.createProject(value)
+                .map( _ => Redirect(routes.IndexController.onPageLoad()))
             }
           )
     }
+  }
+
+  //TODO: Move this list out of this file
+  val phaseList: Seq[Phase] = Seq(
+    Phase("Alpha"),
+    Phase("Beta"),
+    Phase("Discovery"),
+    Phase("Live")
+  )
+
+  private def phaseJsonList(value: Option[String], phases: Seq[Phase]): Seq[JsObject] = {
+    val phaseJsonList = phases.map {
+      phase =>
+        Json.obj(
+          "text" -> phase.phase,
+          "value" -> phase.phase,
+          "selected" -> value.contains(phase.phase)
+        )
+    }
+
+    Json.obj("value" -> "", "text" -> "") +: phaseJsonList
   }
 
 }

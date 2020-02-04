@@ -17,7 +17,7 @@
 package forms
 
 import forms.mappings.Mappings
-import models.Project
+import models.{Phase, Project}
 import play.api.data.Form
 import play.api.data.Forms._
 
@@ -25,9 +25,9 @@ class CreateProjectFormProvider extends Mappings {
 
   def apply(): Form[Project] = Form(
     mapping(
-      "project-name" -> text("createProject.input.projectName.error.required"),
+      "projectName" -> text("createProject.input.projectName.error.required"),
       "details" -> text("createProject.textarea.details.error.required"),
-      "phase" -> text()
+      "phase" -> text("createProject.select.phase.error.required").transform[Phase](s => Phase(s), p => p.phase)
     )(Project.apply)(Project.unapply)
   )
 
